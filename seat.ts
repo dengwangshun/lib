@@ -125,7 +125,8 @@ class SEAT {
 
     console.info(response);
     if (response.status !== "OK") {
-      throw new Error("Check captcha failed");
+      // throw new Error("Check captcha failed");
+      console.log("Check captcha failed")
     }
 
     return response;
