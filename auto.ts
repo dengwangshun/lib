@@ -2,17 +2,36 @@ import SEAT from "./seat.ts";
 import captchaImg from "./image.ts";
 import captcha from "./captcha.ts";
 
-// const username = "200501301";
+const username = "200501301";
 const password = "0K@SKHEZ]2)RV]L3";
 
-const username = "200501307"
-const token = "ef2f3feb85bbcfa5a674e4f0d441f1644621326f27211808";
+// const username = "200501307";
+// const token = "ef2f3feb85bbcfa5a674e4f0d441f1644621326f27211808";
 
-// await delay(17, 59, 51, 0);
+await delay(17, 58, 0, 0);
 console.log(new Date());
 
-const seat = new SEAT(username, password, token);
-// await seat.login();
+const seat = new SEAT(username, password);
+await seat.login();
+
+const triggerTime = new Date().setHours(18, 0, 0, 0);
+const targetDay = `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
+  .toString()
+  .padStart(2, "0")}-${(new Date().getDate() + 1).toString().padStart(2, "0")}`;
+
+while (Date.now() < triggerTime) {
+  try {
+    const status = await seat.room(targetDay);
+    console.log(status[0]);
+
+    if (status[0].free !== 0) {
+      break;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  await new Promise((resolve) => setTimeout(resolve, 250));
+}
 
 let captchaTokens = "";
 
@@ -38,13 +57,7 @@ if (captchaTokens == "") {
 // await delay(18, 0, 0, 0);
 
 console.log(new Date());
-const bookResult = await seat.book(
-  22159,
-  "2023-09-28",
-  420,
-  480,
-  captchaTokens
-);
+const bookResult = await seat.book(22294, targetDay, 570, 1380, captchaTokens);
 // console.log(bookResult);
 
 function delay(h: number, m: number, s: number, ms: number) {

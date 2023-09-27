@@ -49,12 +49,12 @@ export default async function captcha(image: string) {
   });
 
   const data = await response.json();
-  if (data.code !== 0) {
-    // throw new Error("Captcha failed");
-    console.error("Captcha failed")
-  }
-
   console.log(data);
+
+  if (data.code !== 0) {
+    throw new Error("Captcha failed");
+    // console.error("Captcha failed")
+  }
 
   return data.data.position;
 }

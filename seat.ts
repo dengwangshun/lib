@@ -87,7 +87,7 @@ class SEAT {
       )}`
     );
 
-    console.info(response);
+    console.debug(response);
 
     if (response.status !== "success") {
       throw new Error("Login failed");
@@ -104,7 +104,7 @@ class SEAT {
       }
     );
 
-    console.info(response);
+    console.debug(response);
     if (response.status !== "OK") {
       throw new Error("Load captcha failed");
     }
@@ -118,15 +118,15 @@ class SEAT {
         new URLSearchParams({
           a: encode(new TextEncoder().encode(JSON.stringify([position]))),
           token,
-          userId: "8937",
+          // userId: "8937",
           username: this.username,
         })
     );
 
-    console.info(response);
+    console.debug(response);
     if (response.status !== "OK") {
-      // throw new Error("Check captcha failed");
-      console.log("Check captcha failed")
+      throw new Error("Check captcha failed");
+      // console.log("Check captcha failed");
     }
 
     return response;
@@ -161,16 +161,41 @@ class SEAT {
 
     return response;
   }
+
+  async room(date: string) {
+    const response = await this.fetch(`/rest/v2/room/stats2/1/${date}`, {
+      headers: {
+        token: this.token,
+      },
+    });
+
+    console.debug(response);
+
+    if (response.status !== "success") {
+      throw new Error("Room failed");
+    }
+
+    return response.data;
+  }
 }
 
-// const seat = new SEAT(
-//   "200501301",
-//   "0K@SKHEZ]2)RV]L3",
-//   "d36b3db6a9d7ff5a062e7ac0911fd65b7af41eaf27102446"
-// );
+const seat = new SEAT(
+  "200501301",
+  "0K@SKHEZ]2)RV]L3"
+  // "d36b3db6a9d7ff5a062e7ac0911fd65b7af41eaf27102446"
+);
 // // await seat.login();
 // const { token } = await seat.loadCaptchaImg();
 // await seat.checkCaptcha(token, { x: 188, y: 63 });
 // await seat.book(17701, "2022-02-22", 1290, 1320, token);
+
+await seat.login();
+// await seat.room("2023-09-26");
+
+for (let i = 0; i < 10; i++) {
+  const info = await seat.room("2023-09-26");
+  console.log(info);
+  await new Promise((resolve) => setTimeout(resolve, 50));
+}
 
 export default SEAT;
