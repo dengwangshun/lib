@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>展示图片并获取用户点击位置</title>
+  </head>
+  <body>
+    <script>
+      fetch(
+        "https://crispy-carnival-jvw49pqp66x3q5ww-8000.app.github.dev/captcha"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          const word = document.createElement("img", {
+            id: "word",
+          });
+          word.src = data.wordImage;
+          const image = document.createElement("img", {
+            id: "image",
+          });
+          image.src = data.image;
+          document.body.appendChild(word);
+          document.body.appendChild(image);
+          image.addEventListener("click", (event) => {
+            const x = event.clientX - image.offsetLeft;
+            const y = event.clientY - image.offsetTop;
+            const info = {
+              token: data.token,
+              position: { x, y },
+            };
+            fetch(
+              "https://crispy-carnival-jvw49pqp66x3q5ww-8000.app.github.dev/checkCaptcha",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(info),
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                if (data.status === "OK") {
+                  fetch(
+                    "https://crispy-carnival-jvw49pqp66x3q5ww-8000.app.github.dev/book"
+                  );
+                }
+              })
+              .catch((error) => console.error(error));
+          });
+        })
+        .catch((error) => console.error(error));
+    </script>
+  </body>
+</html>
