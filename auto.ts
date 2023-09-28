@@ -36,18 +36,22 @@ while (Date.now() < triggerTime) {
 let captchaTokens = "";
 
 for (let i = 0; i < 10; i++) {
-  const data = await seat.loadCaptchaImg();
-  const image = await captchaImg(data.wordImage, data.image);
+  try {
+    const data = await seat.loadCaptchaImg();
+    const image = await captchaImg(data.wordImage, data.image);
 
-  const position = await captcha(image);
+    const position = await captcha(image);
 
-  const checkResult = await seat.checkCaptcha(data.token, position);
-  if (checkResult.status == "OK") {
-    captchaTokens = data.token;
-    break;
+    const checkResult = await seat.checkCaptcha(data.token, position);
+    if (checkResult.status == "OK") {
+      captchaTokens = data.token;
+      break;
+    }
+  } catch (error) {
+    console.error(error);
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
 }
 
 if (captchaTokens == "") {

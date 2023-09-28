@@ -179,23 +179,23 @@ class SEAT {
   }
 }
 
-const seat = new SEAT(
-  "200501301",
-  "0K@SKHEZ]2)RV]L3"
-  // "d36b3db6a9d7ff5a062e7ac0911fd65b7af41eaf27102446"
-);
+// const seat = new SEAT(
+//   "200501301",
+//   "0K@SKHEZ]2)RV]L3"
+//   // "d36b3db6a9d7ff5a062e7ac0911fd65b7af41eaf27102446"
+// );
 // // await seat.login();
 // const { token } = await seat.loadCaptchaImg();
 // await seat.checkCaptcha(token, { x: 188, y: 63 });
 // await seat.book(17701, "2022-02-22", 1290, 1320, token);
 
-await seat.login();
-// await seat.room("2023-09-26");
+// await seat.login();
+// // await seat.room("2023-09-26");
 
-for (let i = 0; i < 10; i++) {
-  const info = await seat.room("2023-09-26");
-  console.log(info);
-  await new Promise((resolve) => setTimeout(resolve, 50));
-}
+// for (let i = 0; i < 10; i++) {
+//   const info = await seat.room("2023-09-26");
+//   console.log(info);
+//   await new Promise((resolve) => setTimeout(resolve, 50));
+// }
 
 export default SEAT;
